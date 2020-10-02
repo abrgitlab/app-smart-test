@@ -11,6 +11,10 @@
 |
 */
 
-Route::prefix('example')->group(function() {
-    Route::get('/', 'ExampleController@index');
+use Modules\Example\Http\Controllers\ExampleController;
+
+Route::prefix('search')->group(function() {
+    Route::get('/', 'ExampleController@show');
+    Route::post('/', 'ExampleController@search');
+    Route::post('/save', 'ExampleController@save');
 });
