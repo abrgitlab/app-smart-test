@@ -5,6 +5,7 @@ namespace Modules\Example\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Example\Entities\Food;
 use Modules\Example\Services\OpenFoodDataProvider;
 
 class ExampleController extends Controller
@@ -36,9 +37,14 @@ class ExampleController extends Controller
 
     public function save(Request $request)
     {
-        $chosen = $request->request->get('chosen');
+        $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'image' => 'required',
+            'categories' => 'required',
+        ]);
 
-        //TODO: save to db
+        Food::updateOrCreate($request->request->all());
 
         return redirect()->action([self::class, 'show'], [
             'search' => $request->query->get('search'),
