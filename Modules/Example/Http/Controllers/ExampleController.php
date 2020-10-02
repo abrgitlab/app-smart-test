@@ -2,7 +2,6 @@
 
 namespace Modules\Example\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Example\Entities\Food;
@@ -22,7 +21,8 @@ class ExampleController extends Controller
         return view('example::index', [
             'input' => [
                 'search' => $search,
-                'page' => $page
+                'page' => (int) $page,
+                'totalPages' => (int) ceil($data['count'] / $data['page_size']),
             ],
             'data' => $data
         ]);

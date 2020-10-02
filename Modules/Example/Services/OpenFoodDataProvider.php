@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Example\Services;
 
 use \GuzzleHttp\Client as HttpClient;

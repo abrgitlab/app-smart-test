@@ -1,7 +1,8 @@
 @extends('example::layouts.master')
 
 @section('content')
-    <form method="post" action="{{ action([\Modules\Example\Http\Controllers\ExampleController::class, 'show'], [], false) }}">
+    <div class="card">
+    <form method="post" class="card-body" action="{{ action([\Modules\Example\Http\Controllers\ExampleController::class, 'show'], [], false) }}">
     @csrf
         <div class="form-group">
             <label for="search">Type words</label>
@@ -9,7 +10,8 @@
         </div>
         <input type="submit" class="btn btn-primary" value="Search">
     </form>
-    @if (!empty($data))
+    </div>
+    @if (!empty($data) && $data['count'] > 0)
         <table class="table">
             <thead>
             <tr>
@@ -32,5 +34,45 @@
             @endforeach
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if(($input['page'] ?? 1) > 1)
+                <li class="page-item"><a class="page-link" href="{{ action([\Modules\Example\Http\Controllers\ExampleController::class, 'show'], [
+                            'search' => $input['search'],
+                            'page' => $input['page'] - 1,
+                        ]) }}">Previous</a></li>
+                @endif
+                @foreach(\Modules\Example\Services\Paginator::paginate($input['page'] ?? 1, $data['page_size'], $data['count']) as $pages)
+                    @foreach($pages as $page)
+                        @if (($input['page'] ?? 1) === $page)
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link">{{ $input['page'] ?? 1 }}<span class="sr-only">(current)</span></a>
+                            </li>
+                        @else
+                            <li class="page-item"><a class="page-link" href="{{ action([\Modules\Example\Http\Controllers\ExampleController::class, 'show'], [
+                                'search' => $input['search'],
+                                'page' => $page,
+                            ], false) }}">{{ $page }}</a></li>
+                        @endif
+                    @endforeach
+                    @if (!$loop->last)
+                    <li class="page-item"><a class="page-link">...</a></li>
+                    @endif
+                @endforeach
+                @if(($input['page'] ?? 1) < $input['totalPages'])
+                <li class="page-item"><a class="page-link" href="{{ action([\Modules\Example\Http\Controllers\ExampleController::class, 'show'], [
+                    'search' => $input['search'],
+                    'page' => ($input['page'] ?? 1) + 1,
+                ]) }}">Next</a></li>
+                @endif
+            </ul>
+        </nav>
+    @elseif(!empty($data) && $data['count'] === 0)
+        <div class="card">
+            <div class="card-body">
+                No results
+            </div>
+        </div>
     @endif
 @endsection
