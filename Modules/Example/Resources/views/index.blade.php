@@ -8,7 +8,11 @@
     </form>
 
     @if (!empty($data))
-        <form method="post" action="">
+        <form method="post" action="{{ action([\Modules\Example\Http\Controllers\ExampleController::class, 'save'], [
+            'search' => $input['search'] ?? null,
+            'page' => $input['page'] ?? null,
+        ], false) }}">
+        @csrf
         <table>
             <thead>
             <tr>
@@ -22,7 +26,7 @@
             <tbody>
             @foreach($data['products'] ?? [] as $item)
             <tr>
-                <td><input type="checkbox" name="choose"></td>
+                <td><input type="checkbox" name="chosen[]" value="{{ $item['id'] }}"></td>
                 <td>{{ $item['id'] }}</td>
                 <td>@if (($image = ($item['image_front_thumb_url'] ?? null)) !== null ) <img src="{{ $image }}"> @endif</td>
                 <td>{{ $item['product_name'] }}</td>

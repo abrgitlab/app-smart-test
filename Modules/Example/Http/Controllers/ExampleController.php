@@ -12,13 +12,16 @@ class ExampleController extends Controller
     public function show(OpenFoodDataProvider $openFoodDataProvider, Request $request)
     {
         $data = [];
-        if (!empty($search = $request->query->get('search'))) {
-            $data = $openFoodDataProvider->getData($search, $request->query->get('page') ?? 1);
+
+        $page = $request->query->get('page') ?? null;
+        if (($search = $request->query->get('search')) !== null) {
+            $data = $openFoodDataProvider->getData($search, $page ?? 1);
         }
 
         return view('example::index', [
             'input' => [
-                'search' => $search
+                'search' => $search,
+                'page' => $page
             ],
             'data' => $data
         ]);
@@ -27,7 +30,19 @@ class ExampleController extends Controller
     public function search(Request $request)
     {
         return redirect()->action([self::class, 'show'], [
-            'search' => $request->request->get('search') ?? '',
+            'search' => $request->request->get('search'),
+        ]);
+    }
+
+    public function save(Request $request)
+    {
+        $chosen = $request->request->get('chosen');
+
+        //TODO: save to db
+
+        return redirect()->action([self::class, 'show'], [
+            'search' => $request->query->get('search'),
+            'page' => $request->query->get('page'),
         ]);
     }
 }
