@@ -15,7 +15,6 @@
         "guzzlehttp/guzzle": "^7.1",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
-        "laravelcollective/html": "^6.2",
         "nwidart/laravel-modules": "^7.2"
     },
     "require-dev": {
