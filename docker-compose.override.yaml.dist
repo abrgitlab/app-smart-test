@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+    php_fpm:
+        container_name: laravel_php
+        volumes:
+            - .:/var/www
+        environment:
+            - XDEBUG_HOST=192.168.1.1
+            - XDEBUG_PORT=9000
+            - PHP_IDE_CONFIG=serverName=127.0.0.1
+
+    nginx:
+        ports:
+            - "80:80"
+        volumes:
+            - .:/var/www
+
+    mysql:
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_USER: app-smart
+            MYSQL_PASSWORD: app-smart
+            MYSQL_DATABASE: app-smart
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - mysql:/var/lib/mysql
+
+volumes:
+    mysql:
+        driver: local
