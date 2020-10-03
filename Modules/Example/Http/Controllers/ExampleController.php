@@ -22,7 +22,7 @@ class ExampleController extends Controller
             'input' => [
                 'search' => $search,
                 'page' => (int) $page,
-                'totalPages' => (int) ceil($data['count'] / $data['page_size']),
+                'totalPages' => (!empty($data)) ? (int) ceil($data['count'] / $data['page_size']) : 0,
             ],
             'data' => $data
         ]);
