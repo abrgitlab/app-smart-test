@@ -12,6 +12,10 @@ class Paginator
 
         $totalPages = (int) ceil($count / $perPage);
 
+        if ($currentPage > $totalPages) {
+            $currentPage = $totalPages;
+        }
+
         $firstBlock = [1];
 
         $window = [];
@@ -27,10 +31,14 @@ class Paginator
             $window[] = $currentPage + 1;
         }
 
-        $lastBlock = [$totalPages];
+        if ($totalPages > 1) {
+            $lastBlock = [$totalPages];
+        }
 
-        if (!empty($window) && $window[count($window) - 1] + 1 === $totalPages) {
+        if (!empty($window) && !empty($lastBlock) && $window[count($window) - 1] + 1 === $lastBlock[0]) {
             $window[] = array_shift($lastBlock);
+        } elseif (empty($window) && !empty($lastBlock) && $lastBlock[0] - 1 === 1) {
+            $firstBlock[] = array_shift($lastBlock);
         }
 
         if (!empty($window) && $window[0] - 1 === 1) {
