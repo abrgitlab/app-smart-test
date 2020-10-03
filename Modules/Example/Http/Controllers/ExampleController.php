@@ -3,7 +3,9 @@
 namespace Modules\Example\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Validator;
 use Modules\Example\Entities\Food;
 use Modules\Example\Services\OpenFoodDataProvider;
 
@@ -37,12 +39,16 @@ class ExampleController extends Controller
 
     public function save(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required',
             'image' => 'required',
             'categories' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return new Response('Wrong data', 400);
+        }
 
         Food::updateOrCreate($request->request->all());
 
