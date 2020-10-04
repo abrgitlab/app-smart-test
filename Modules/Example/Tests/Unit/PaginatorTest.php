@@ -21,6 +21,12 @@ class PaginatorTest extends TestCase
         $this->assertCount(1, $result);
         $this->assertEquals(1, $result[0][0]);
 
+        $result = Paginator::paginate(0, 20, 21);
+        $this->assertCount(1, $result);
+        $this->assertCount(2, $result[0]);
+        $this->assertEquals(1, $result[0][0]);
+        $this->assertEquals(2, $result[0][1]);
+
         $result = Paginator::paginate(1, 20, 21);
         $this->assertCount(1, $result);
         $this->assertCount(2, $result[0]);
