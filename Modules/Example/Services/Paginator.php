@@ -14,6 +14,8 @@ class Paginator
 
         if ($currentPage > $totalPages) {
             $currentPage = $totalPages;
+        } elseif ($currentPage < 1) {
+            $currentPage = 1;
         }
 
         $firstBlock = [1];

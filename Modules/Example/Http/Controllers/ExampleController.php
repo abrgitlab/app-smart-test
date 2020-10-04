@@ -23,7 +23,7 @@ class ExampleController extends Controller
         return view('example::index', [
             'input' => [
                 'search' => $search,
-                'page' => (int) $page,
+                'page' => (int) ($page ?? 1),
                 'totalPages' => (!empty($data)) ? (int) ceil($data['count'] / $data['page_size']) : 0,
             ],
             'data' => $data
