@@ -15,3 +15,12 @@ Each product/item should have the following parameters:
 ## Tech stack:
 - PHP (last version)
 - Laravel (last version)
+
+## How to test
+Run `docker-compose up -d`
+
+Then open in your favorite browser http://localhost/search.
+
+Enjoy!
+
+After testing run `docker-compose down --remove-orphans -v` for stop docker containers, remove its volumes and cleanup
